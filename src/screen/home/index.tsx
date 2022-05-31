@@ -7,8 +7,8 @@ import {
   selectData,
 } from '../../redux/user/userSlice';
 import UserCard from '../../component/card';
+import ScreenTitle from '../../component/screenTitle';
 import type { User } from '../../type/user';
-import { Typography } from '@mui/material';
 
 const HomeScreen = () => {
   const { users, fetchStatus} = useAppSelector(selectData);
@@ -30,9 +30,7 @@ const HomeScreen = () => {
 
   return (
     <Box p="16px">
-      <Typography variant="h5">
-        User List
-      </Typography>
+      <ScreenTitle title="User List" />
       <Box mt="20px">
         {
           users.map((user: User, idx) => {
