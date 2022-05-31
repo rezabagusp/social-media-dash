@@ -30,6 +30,11 @@ export const fetchCommentByPostId = createAsyncThunk('userPost/fetchCommentByPos
   return response.data
 })
 
+export const deleteCommentById = createAsyncThunk('userPost/deleteCommentById', async (commentId: Comment['id']) => {
+  const response = await client.delete(`/comments/${commentId}`);
+  return response.data
+})
+
 export const postDetail = createSlice({
   name: 'postDetail',
   initialState,

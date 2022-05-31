@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
@@ -6,14 +6,24 @@ import { useParams } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import ScreenTitle from '../../component/screenTitle';
 import CommentCard from '../../component/card/comment';
+import ConfirmationDialog from '../../component/confirmationDialog';
 import {
   fetchPostById,
   fetchCommentByPostId,
+  deleteCommentById,
   selectData,
 } from '../../redux/postDetail/postDetailSlice';
 import type { Comment } from '../../type/comment';  
+import type { Post } from '../../type/post';  
+
+type ModalInfo = {
+  type: 'deleteComment' | 'deletePost',
+  data: Post | Comment,
+};
 
 const PostDetailScreen = () => {
+  const [modalInfo, setModalInfo] = useState<ModalInfo | null>(null);
+
   const {
     // userId,
     postId,
@@ -35,6 +45,24 @@ const PostDetailScreen = () => {
   useEffect(() => {
     dispatch(fetchCommentByPostId(Number(postId)));
   },  [dispatch, postId]);
+
+  const handleClickDeleteComment = (comment: Comment) => {
+    setModalInfo({
+      type: 'deleteComment',
+      data: comment,
+    })
+  };
+
+  const handleDeleteComment = async (comment: Comment) => {
+    try {
+      await dispatch(deleteCommentById(comment.id))
+        .unwrap()
+      setModalInfo(null);
+      alert('Delete Comment Success!');
+    } catch (err) {
+      alert('Something went wrong! fail to delete comment.');
+    }
+  };
 
   const renderPost = () => {
     if (fetchPostByIdStatus === 'failed') {
@@ -75,27 +103,49 @@ const PostDetailScreen = () => {
 
       return (
         <Box mb="16px">
-          <CommentCard key={key} comment={comment} />
+          <CommentCard
+            key={key}
+            comment={comment}
+            onClickEdit={() => {console.log('click edit')}}
+            onClickDelete={() => handleClickDeleteComment(comment)}
+          />
         </Box>
       )
     });
   };
 
+  const renderModal = () => {
+    if (modalInfo?.type === 'deleteComment') {
+      return (
+        <ConfirmationDialog
+          title="Are sure want to delete this comment ?"
+          onClose={() => setModalInfo(null)}
+          onSubmit={() => handleDeleteComment(modalInfo.data as Comment)}
+        />
+      )
+    }
+
+    return null;
+  };
+
   return (
-    <Box p="16px">
-      <ScreenTitle title="Post Detail" />
-      <Box mt="24px">
-        {renderPost()}
-      </Box>
-      <Box component="section" mt="24px">
-        <Typography variant="h6">
-          Comment List
-        </Typography>
+    <>
+      <Box p="16px">
+        <ScreenTitle title="Post Detail" />
         <Box mt="24px">
-          {renderComments()}
+          {renderPost()}
+        </Box>
+        <Box component="section" mt="24px">
+          <Typography variant="h6">
+            Comment List
+          </Typography>
+          <Box mt="24px">
+            {renderComments()}
+          </Box>
         </Box>
       </Box>
-    </Box>
+      {renderModal()}
+    </>
   )
 };
 
