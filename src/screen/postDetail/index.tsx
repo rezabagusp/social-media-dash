@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
+import { Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
@@ -11,7 +12,6 @@ import {
   selectData,
 } from '../../redux/postDetail/postDetailSlice';
 import type { Comment } from '../../type/comment';  
-import { Typography } from '@mui/material';
 
 const PostDetailScreen = () => {
   const {
