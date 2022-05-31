@@ -3,10 +3,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { client } from '../../api/client'
 import type { User } from '../../type/user';
+import type { FetchStatus } from '../../type/misc';
 
 export interface InitialState {
   users: User[],
-  fetchStatus: 'idle' | 'loading' | 'succeeded' | 'failed',
+  fetchStatus: FetchStatus,
 }
 
 const initialState: InitialState = {
@@ -20,7 +21,7 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
 })
 
 export const user = createSlice({
-  name: 'counter',
+  name: 'user',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -39,10 +40,6 @@ export const user = createSlice({
   },
 });
 
-
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectData = (rootState: RootState) => rootState.user;
 
 export default user.reducer;

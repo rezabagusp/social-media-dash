@@ -9,7 +9,7 @@ const ScreenTitle = ({
   title,
 }: Props) => {
   return (
-    <Typography variant="h5" borderBottom="2px solid" width="max-content">
+    <Typography variant="h5" borderBottom="2px solid" width="max-content" margin="0 auto">
       {title}
     </Typography>
   );

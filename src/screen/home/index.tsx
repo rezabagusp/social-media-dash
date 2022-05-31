@@ -6,7 +6,7 @@ import {
   fetchUser,
   selectData,
 } from '../../redux/user/userSlice';
-import UserCard from '../../component/card';
+import UserCard from '../../component/card/user';
 import ScreenTitle from '../../component/screenTitle';
 import type { User } from '../../type/user';
 
