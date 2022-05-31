@@ -18,14 +18,28 @@ const AppLayout = ({
           display: 'flex',
           alignItems: 'center',
           padding: '0 16px',
-          color: "#ffffff"
+          color: "#ffffff",
         }}
       >
-        Social Media Dashboard
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: '1200px',
+            margin: '0 auto',
+          }}
+        >
+          Social Media Dashboard
+        </Box>
       </Box>
-      <main>
+      <Box
+        component="main"
+        sx={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+        }}
+      >
         {children}
-      </main>
+      </Box>
     </>
   );
 };
