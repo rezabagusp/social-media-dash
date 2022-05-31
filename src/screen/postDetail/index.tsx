@@ -11,6 +11,7 @@ import {
   fetchPostById,
   fetchCommentByPostId,
   deleteCommentById,
+  commentDeleted,
   selectData,
 } from '../../redux/postDetail/postDetailSlice';
 import type { Comment } from '../../type/comment';  
@@ -58,6 +59,7 @@ const PostDetailScreen = () => {
       await dispatch(deleteCommentById(comment.id))
         .unwrap()
       setModalInfo(null);
+      dispatch(commentDeleted(comment.id));
       alert('Delete Comment Success!');
     } catch (err) {
       alert('Something went wrong! fail to delete comment.');
@@ -96,6 +98,10 @@ const PostDetailScreen = () => {
 
     if (fetchCommentByPostIdStatus === 'loading') {
       return <>Loading...</>;
+    }
+
+    if (fetchCommentByPostIdStatus === 'succeeded' && !comments.length) {
+      return <>No Comment Found.</>;
     }
 
     return comments.map((comment: Comment) => {

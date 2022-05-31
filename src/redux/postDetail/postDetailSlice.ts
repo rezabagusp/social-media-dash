@@ -38,7 +38,11 @@ export const deleteCommentById = createAsyncThunk('userPost/deleteCommentById', 
 export const postDetail = createSlice({
   name: 'postDetail',
   initialState,
-  reducers: {},
+  reducers: {
+    commentDeleted(state, action) {
+      state.comments  = state.comments.filter((comment) => comment.id !== action.payload);
+    }
+  }, 
   extraReducers: (builder) => {
     builder
       .addCase(fetchPostById.pending, (state) => {
@@ -63,6 +67,8 @@ export const postDetail = createSlice({
       })
   },
 });
+
+export const { commentDeleted } = postDetail.actions;
 
 export const selectData = (rootState: RootState) => rootState.postDetail;
 
