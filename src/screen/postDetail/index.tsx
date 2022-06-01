@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
@@ -11,15 +11,19 @@ import {
   fetchPostById,
   fetchCommentByPostId,
   deleteCommentById,
+  addNewComment,
+  editComment,
   commentDeleted,
   selectData,
 } from '../../redux/postDetail/postDetailSlice';
 import type { Comment } from '../../type/comment';  
 import type { Post } from '../../type/post';  
 
+import CommentFormModal from './commentFormModal';
+
 type ModalInfo = {
-  type: 'deleteComment' | 'deletePost',
-  data: Post | Comment,
+  type: 'deleteComment' | 'deletePost' | 'addComment' | 'editComment',
+  data?: Comment | Post,
 };
 
 const PostDetailScreen = () => {
@@ -63,6 +67,49 @@ const PostDetailScreen = () => {
       alert('Delete Comment Success!');
     } catch (err) {
       alert('Something went wrong! fail to delete comment.');
+    }
+  };
+
+  const handleClickEditComment = (comment: Comment) => {
+    setModalInfo({
+      type: 'editComment',
+      data: comment
+    })
+  };
+
+  const handleAddNewComment = async (commentText: string) => {
+    const payload = {
+      postId,
+      name: 'Social Media Admin',
+      email: 'admin@social.media',
+      body: commentText,
+    }
+
+    try {
+      await dispatch(addNewComment(payload as unknown as Comment)).unwrap();
+      setModalInfo(null);
+      alert('Add new comment success!')
+    } catch {
+      alert('Fail to add new comment');
+    }
+  };
+
+  const handleEditComment = async (newCommentText: string) => {
+    const currentComment = modalInfo?.data as Comment;
+
+    const payload = {
+      ...currentComment,
+      body: newCommentText,
+    }
+
+    console.log('payload', payload);
+
+    try {
+      await dispatch(editComment(payload as unknown as Comment)).unwrap();
+      setModalInfo(null);
+      alert('Edit comment success!')
+    } catch {
+      alert('Fail to edit comment');
     }
   };
 
@@ -112,7 +159,7 @@ const PostDetailScreen = () => {
           <CommentCard
             key={key}
             comment={comment}
-            onClickEdit={() => {console.log('click edit')}}
+            onClickEdit={() => handleClickEditComment(comment)}
             onClickDelete={() => handleClickDeleteComment(comment)}
           />
         </Box>
@@ -131,6 +178,26 @@ const PostDetailScreen = () => {
       )
     }
 
+    if (modalInfo?.type === 'addComment') {
+      return (
+        <CommentFormModal
+          onClose={() => setModalInfo(null)}
+          onSubmit={handleAddNewComment}
+        />
+      )
+    }
+
+    if (modalInfo?.type === 'editComment') {
+      return (
+        <CommentFormModal
+          comment={modalInfo.data as Comment}
+          onClose={() => setModalInfo(null)}
+          onSubmit={handleEditComment}
+          isEdit
+        />
+      )
+    }
+
     return null;
   };
 
@@ -145,6 +212,14 @@ const PostDetailScreen = () => {
           <Typography variant="h6">
             Comment List
           </Typography>
+          <Box mt="8px">
+            <Button
+              variant="outlined"
+              onClick={() => setModalInfo({type: 'addComment'})}
+            >
+              Add New Comment
+            </Button>
+          </Box>
           <Box mt="24px">
             {renderComments()}
           </Box>

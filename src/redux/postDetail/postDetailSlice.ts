@@ -17,23 +17,33 @@ const initialState: InitialState = {
   post: null,
   fetchPostByIdStatus: 'idle',
   comments: [],
-  fetchCommentByPostIdStatus: 'idle', 
+  fetchCommentByPostIdStatus: 'idle',
 };
 
 export const fetchPostById = createAsyncThunk('userPost/fetchPostById', async (postId: number) => {
   const response = await client.get(`/posts/${postId}`);
   return response.data
-})
+});
 
 export const fetchCommentByPostId = createAsyncThunk('userPost/fetchCommentByPostId', async (postId: number) => {
   const response = await client.get(`/posts/${postId}/comments`);
   return response.data
-})
+});
 
 export const deleteCommentById = createAsyncThunk('userPost/deleteCommentById', async (commentId: Comment['id']) => {
   const response = await client.delete(`/comments/${commentId}`);
   return response.data
-})
+});
+
+export const addNewComment = createAsyncThunk('userPost/addNewComment', async (payload: Comment) => {
+  const response = await client.post('/comments', payload);
+  return response.data
+});
+
+export const editComment = createAsyncThunk('userPost/editComment', async (payload: Comment) => {
+  const response = await client.put(`/comments/${payload.id}`, payload);
+  return response.data
+});
 
 export const postDetail = createSlice({
   name: 'postDetail',
@@ -41,7 +51,7 @@ export const postDetail = createSlice({
   reducers: {
     commentDeleted(state, action) {
       state.comments  = state.comments.filter((comment) => comment.id !== action.payload);
-    }
+    },
   }, 
   extraReducers: (builder) => {
     builder
@@ -64,6 +74,24 @@ export const postDetail = createSlice({
       })
       .addCase(fetchCommentByPostId.rejected, (state) => {
         state.fetchCommentByPostIdStatus = 'failed';
+      })
+      .addCase(addNewComment.fulfilled, (state, action) => {
+        state.comments = [
+          {
+            ...action.payload
+          },
+          ...state.comments,
+        ];
+      })
+      .addCase(editComment.fulfilled, (state, action) => {
+        const newComments: Comment[] = state.comments.map((comment: Comment) => {
+          if (comment.id === action.payload.id) {
+            return action.payload;
+          }
+          return comment;
+        })
+
+        state.comments = newComments;
       })
   },
 });
