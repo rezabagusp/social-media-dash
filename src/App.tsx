@@ -10,6 +10,7 @@ import UserPosts from "./screen/userPosts";
 import PostDetail from './screen/postDetail';
 import NotFound from './screen/notFound';
 import UserAlbums from './screen/userAlbums';
+import AlbumDetail from './screen/albumDetail';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/users/:userId/posts" element={<UserPosts />} />
             <Route path="/users/:userId/posts/:postId" element={<PostDetail />} />
             <Route path="/users/:userId/albums" element={<UserAlbums />} />
+            <Route path="/users/:userId/albums/:albumId" element={<AlbumDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
       </AppLayout>
