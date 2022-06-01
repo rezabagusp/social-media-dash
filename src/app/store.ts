@@ -2,12 +2,16 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import userReducer from '../redux/user/userSlice';
 import userPostReducer from '../redux/userPost/userPostSlice';
 import postDetailReducer from '../redux/postDetail/postDetailSlice';
+import userAlbumReducer from '../redux/userAlbum/userAlbumSlice';
+import albumDetailReducer from '../redux/albumDetail/albumDetailSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     userPost: userPostReducer,
     postDetail: postDetailReducer,
+    userAlbum: userAlbumReducer,
+    albumDetail: albumDetailReducer,
   },
 });
 

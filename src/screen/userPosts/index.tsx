@@ -41,16 +41,12 @@ const UserPosts = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (fetchUserByIdStatus === 'idle') {
-      dispatch(fetchUserById(Number(userId)))
-    }
-  }, [fetchUserByIdStatus, dispatch, userId])
+    dispatch(fetchUserById(Number(userId)))
+  }, [dispatch, userId])
 
   useEffect(() => {
-    if (fetchUserPostsStatus === 'idle') {
-      dispatch(fetchUserPosts(Number(userId)))
-    }
-  }, [fetchUserPostsStatus, dispatch, userId])
+    dispatch(fetchUserPosts(Number(userId)))
+  }, [dispatch, userId])
 
   const handleAddPost = async (formData: PostModalFormData) => {
     const payload = {
