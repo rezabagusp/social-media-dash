@@ -37,9 +37,11 @@ const HomeScreen = () => {
             const key = `user-${user.id}`;
 
             return (
-              <Box mb="24px">
+              <Box
+                mb="24px"
+                key={key}
+              >
                 <UserCard
-                  key={key}
                   user={user}
                 />
               </Box>
