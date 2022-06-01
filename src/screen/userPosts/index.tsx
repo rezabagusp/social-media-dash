@@ -63,6 +63,10 @@ const UserPosts = () => {
       return <>Loading...</>
     }
 
+    if (fetchUserPostsStatus === 'succeeded' && !userPosts.length) {
+      return <>No Comment Found.</>;
+    }
+
     return userPosts.map((post: Post) => {
       const key = `post-${post.id}`;
 
