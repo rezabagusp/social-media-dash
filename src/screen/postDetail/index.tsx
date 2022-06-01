@@ -102,8 +102,6 @@ const PostDetailScreen = () => {
       body: newCommentText,
     }
 
-    console.log('payload', payload);
-
     try {
       await dispatch(editComment(payload as unknown as Comment)).unwrap();
       setModalInfo(null);

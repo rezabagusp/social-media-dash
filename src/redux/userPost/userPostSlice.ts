@@ -4,11 +4,12 @@ import { RootState } from '../../app/store';
 import { client } from '../../api/client'
 import type { User } from '../../type/user';
 import type { FetchStatus } from '../../type/misc';
+import type { Post } from '../../type/post';
 
 export interface InitialState {
   user: User | null,
   fetchUserByIdStatus: FetchStatus,
-  userPosts: [],
+  userPosts: Post[],
   fetchUserPostsStatus: FetchStatus,
 }
 
@@ -29,10 +30,29 @@ export const fetchUserPosts = createAsyncThunk('userPost/fetchUserPosts', async 
   return response.data
 })
 
+export const addNewPost = createAsyncThunk('userPost/addNewPost', async (payload: Post) => {
+  const response = await client.post(`/posts`, payload);
+  return response.data
+})
+
+export const editPost = createAsyncThunk('userPost/editNewPost', async (payload: Post) => {
+  const response = await client.put(`/posts/${payload.id}`, payload);
+  return response.data
+})
+
+export const deletePost = createAsyncThunk('userPost/deletePost', async (postId: Post['id']) => {
+  const response = await client.delete(`/posts/${postId}`);
+  return response.data
+})
+
 export const userPost = createSlice({
   name: 'userPost',
   initialState,
-  reducers: {},
+  reducers: {
+    userPostDeleted(state, action) {
+      state.userPosts = state.userPosts.filter(userPost => userPost.id !== action.payload);
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserById.pending, (state) => {
@@ -55,8 +75,26 @@ export const userPost = createSlice({
       .addCase(fetchUserPosts.rejected, (state) => {
         state.fetchUserPostsStatus = 'failed';
       })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        state.userPosts = [
+          action.payload,
+          ...state.userPosts,
+        ]
+      })
+      .addCase(editPost.fulfilled, (state, action) => {
+        const newUserPosts: Post[] = state.userPosts.map((post: Post) => {
+          if (post.id === action.payload.id) {
+            return action.payload;
+          }
+          return post;
+        })
+
+        state.userPosts = newUserPosts;
+      })
   },
 });
+
+export const { userPostDeleted } = userPost.actions;
 
 export const selectData = (rootState: RootState) => rootState.userPost;
 
