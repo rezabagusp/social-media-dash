@@ -102,8 +102,6 @@ const PostDetailScreen = () => {
       body: newCommentText,
     }
 
-    console.log('payload', payload);
-
     try {
       await dispatch(editComment(payload as unknown as Comment)).unwrap();
       setModalInfo(null);
@@ -155,9 +153,11 @@ const PostDetailScreen = () => {
       const key = `comment-${comment.id}`;
 
       return (
-        <Box mb="16px">
+        <Box
+          mb="16px"
+          key={key}
+        >
           <CommentCard
-            key={key}
             comment={comment}
             onClickEdit={() => handleClickEditComment(comment)}
             onClickDelete={() => handleClickDeleteComment(comment)}

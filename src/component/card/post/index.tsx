@@ -1,5 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
 
 import { Post } from "../../../type/post";
@@ -7,12 +9,15 @@ import { Post } from "../../../type/post";
 interface Props {
   post: Post,
   userId: number,
-  withAction?: boolean,
+  onClickEdit?: () => void,
+  onClickDelete: () => void, 
 }
 
 const PostCzrd = ({
   post,
   userId,
+  onClickEdit,
+  onClickDelete,
 }: Props) => {
   const {
     title,
@@ -39,6 +44,29 @@ const PostCzrd = ({
           </Typography>
         </Box>
       </Link>
+      <Box px="16px" my="16px">
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button
+              size="small"
+              variant="contained"
+              onClick={onClickEdit}
+            >
+              Edit
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              size="small"
+              variant="outlined"
+              color="error"
+              onClick={onClickDelete}
+            >
+              Delete
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 };
