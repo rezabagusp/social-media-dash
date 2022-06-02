@@ -1,6 +1,13 @@
 import { ReactNode } from "react";
 import Box from '@mui/material/Box';
 
+import Snackbar from '../snackbar';
+import { useAppSelector,useAppDispatch } from "../../app/hooks";
+import {
+  snackbarHide,
+  selectData,
+} from '../../redux/snackbar/snackbarSlice';
+
 interface Props {
   children: ReactNode,
 }
@@ -8,8 +15,21 @@ interface Props {
 const AppLayout = ({
   children,
 }: Props) => {
+  const { isShow, message } = useAppSelector(selectData);
+
+  const dispatch = useAppDispatch();
+
+  const handleCloseSnackBar = () => {
+    dispatch(snackbarHide())
+  }
+
   return (
     <>
+      <Snackbar
+        open={isShow}
+        onClose={handleCloseSnackBar}
+        message={message}
+      />    
       <Box
         component="header"
         sx={{

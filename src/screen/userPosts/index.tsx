@@ -13,6 +13,7 @@ import {
   userPostDeleted,
   selectData,
 } from '../../redux/userPost/userPostSlice';
+import { snackbarShow } from '../../redux/snackbar/snackbarSlice';
 import UserCard from '../../component/card/user';
 import PostCard from '../../component/card/post';
 import ScreenTitle from '../../component/screenTitle';
@@ -57,9 +58,9 @@ const UserPosts = () => {
     try {
       await dispatch(addNewPost(payload as unknown as Post)).unwrap();
       setModalInfo(null);
-      alert('Add new post success!')
+      dispatch(snackbarShow('Add new post success!'));
     } catch {
-      alert('Fail to add new post');
+      dispatch(snackbarShow('Fail to add new post'));
     }
   };
 
@@ -72,9 +73,9 @@ const UserPosts = () => {
     try {
       await dispatch(editPost(payload as unknown as Post)).unwrap();
       setModalInfo(null);
-      alert('Edit post success!')
+      dispatch(snackbarShow('Edit post success!'));
     } catch {
-      alert('Fail to edit post');
+      dispatch(snackbarShow('Fail to edit post'));
     }
   };
 
@@ -97,9 +98,9 @@ const UserPosts = () => {
       await dispatch(deletePost(post.id)).unwrap();
       setModalInfo(null);
       dispatch(userPostDeleted(post.id));
-      console.log('Delete post success!')
+      dispatch(snackbarShow('Delete post success!'))
     } catch {
-      console.log('Fail to delete post');
+      dispatch(snackbarShow('Fail to delete post'));
     }
   };
 

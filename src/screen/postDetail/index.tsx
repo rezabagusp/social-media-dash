@@ -20,6 +20,7 @@ import type { Comment } from '../../type/comment';
 import type { Post } from '../../type/post';  
 
 import CommentFormModal from './commentFormModal';
+import { snackbarShow } from '../../redux/snackbar/snackbarSlice';
 
 type ModalInfo = {
   type: 'deleteComment' | 'deletePost' | 'addComment' | 'editComment',
@@ -64,9 +65,9 @@ const PostDetailScreen = () => {
         .unwrap()
       setModalInfo(null);
       dispatch(commentDeleted(comment.id));
-      alert('Delete Comment Success!');
+      dispatch(snackbarShow('Delete Comment Success!'));
     } catch (err) {
-      alert('Something went wrong! fail to delete comment.');
+      dispatch(snackbarShow('Something went wrong! fail to delete comment.'));
     }
   };
 
@@ -88,9 +89,9 @@ const PostDetailScreen = () => {
     try {
       await dispatch(addNewComment(payload as unknown as Comment)).unwrap();
       setModalInfo(null);
-      alert('Add new comment success!')
+      dispatch(snackbarShow('Add new comment success!'));
     } catch {
-      alert('Fail to add new comment');
+      dispatch(snackbarShow('Fail to add new comment'));
     }
   };
 
@@ -105,9 +106,9 @@ const PostDetailScreen = () => {
     try {
       await dispatch(editComment(payload as unknown as Comment)).unwrap();
       setModalInfo(null);
-      alert('Edit comment success!')
+      dispatch(snackbarShow('Edit comment success!'))
     } catch {
-      alert('Fail to edit comment');
+      dispatch(snackbarShow('Fail to edit comment'));
     }
   };
 

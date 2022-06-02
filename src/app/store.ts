@@ -4,6 +4,7 @@ import userPostReducer from '../redux/userPost/userPostSlice';
 import postDetailReducer from '../redux/postDetail/postDetailSlice';
 import userAlbumReducer from '../redux/userAlbum/userAlbumSlice';
 import albumDetailReducer from '../redux/albumDetail/albumDetailSlice';
+import snackbarReducer from '../redux/snackbar/snackbarSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     postDetail: postDetailReducer,
     userAlbum: userAlbumReducer,
     albumDetail: albumDetailReducer,
+    snackbar: snackbarReducer,
   },
 });
 
