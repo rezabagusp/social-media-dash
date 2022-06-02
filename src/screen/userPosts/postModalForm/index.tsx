@@ -61,6 +61,7 @@ const PostModalForm = ({
             margin="dense"
             id="title"
             label="Title"
+            name="title"
             type="text"
             fullWidth
             variant="standard"
@@ -72,6 +73,7 @@ const PostModalForm = ({
             margin="dense"
             id="body"
             label="Content"
+            name="content"
             type="text"
             fullWidth
             variant="standard"
