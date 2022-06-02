@@ -14,8 +14,8 @@ import AlbumDetail from './screen/albumDetail';
 
 function App() {
   return (
+    <BrowserRouter>
     <div className="App">
-      <BrowserRouter>
         <AppLayout>
           <Routes>
             <Route path="/" element={<HomeScreen />} />
@@ -26,8 +26,8 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
       </AppLayout>
-      </BrowserRouter>
     </div>
+    </BrowserRouter>
   );
 }
 

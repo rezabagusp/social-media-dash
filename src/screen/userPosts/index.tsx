@@ -97,9 +97,9 @@ const UserPosts = () => {
       await dispatch(deletePost(post.id)).unwrap();
       setModalInfo(null);
       dispatch(userPostDeleted(post.id));
-      alert('Delete post success!')
+      console.log('Delete post success!')
     } catch {
-      alert('Fail to delete post');
+      console.log('Fail to delete post');
     }
   };
 
@@ -129,7 +129,7 @@ const UserPosts = () => {
     }
 
     if (fetchUserPostsStatus === 'succeeded' && !userPosts.length) {
-      return <>No Comment Found.</>;
+      return <>No post found.</>;
     }
 
     return userPosts.map((post: Post) => {

@@ -1,7 +1,7 @@
 // A tiny wrapper around fetch(), borrowed from
 // https://kentcdodds.com/blog/replace-axios-with-a-simple-custom-fetch-wrapper
 
-const BASE_API_URL = "https://jsonplaceholder.typicode.com"
+export const BASE_API_URL = "https://jsonplaceholder.typicode.com"
 
 export async function client(endpoint, { body, ...customConfig } = {}) {
   const headers = { 'Content-Type': 'application/json' }
